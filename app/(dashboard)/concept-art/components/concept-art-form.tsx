@@ -169,7 +169,7 @@ export function ConceptArtForm({ art, entities, existingTags = [], preSelectedEn
     const newFiles: FileUpload[] = Array.from(selectedFiles)
       .filter(f => f.type.startsWith('image/'))
       .map(file => ({
-        id: crypto.randomUUID(),
+        id: Math.random().toString(36).substring(2) + Date.now().toString(36),
         file,
         preview: URL.createObjectURL(file),
         title: file.name.replace(/\.[^/.]+$/, ''), // Remove extension
