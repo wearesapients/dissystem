@@ -1,0 +1,35 @@
+/**
+ * Concept Art Overview Page Header - Localized
+ */
+
+'use client'
+
+import Link from 'next/link'
+import { Plus } from 'lucide-react'
+import { useLocale } from '@/lib/locale-context'
+import { t } from '@/lib/i18n'
+
+interface ConceptArtOverviewHeaderProps {
+  total: number
+}
+
+export function ConceptArtOverviewHeader({ total }: ConceptArtOverviewHeaderProps) {
+  const { locale } = useLocale()
+  
+  return (
+    <div className="flex items-center justify-between mb-8">
+      <div>
+        <h1 className="text-3xl font-bold text-white mb-2">
+          {t('conceptArt.title', locale)}
+        </h1>
+        <p className="text-white/50">
+          {total} {locale === 'ru' ? 'работ всего' : 'works total'}
+        </p>
+      </div>
+      <Link href="/concept-art/new" className="btn btn-primary">
+        <Plus size={18} strokeWidth={1.5} />
+        {t('conceptArt.upload', locale)}
+      </Link>
+    </div>
+  )
+}

@@ -1,0 +1,533 @@
+// Sapients Production OS - Full Prisma Schema
+// Game development studio internal CRM
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum Role {
+  ADMIN
+  EXECUTIVE_PRODUCER
+  CREATIVE_DIRECTOR
+  CONCEPT_ARTIST
+  ARTIST
+  WRITER
+  VIEWER
+}
+
+enum GameEntityType {
+  UNIT
+  HERO
+  FACTION
+  SPELL
+  ARTIFACT
+  LOCATION
+  OBJECT
+  OTHER
+}
+
+enum AssetStatus {
+  DRAFT
+  IN_REVIEW
+  APPROVED
+  REJECTED
+  ARCHIVED
+}
+
+enum ThoughtStatus {
+  DRAFT
+  PENDING
+  IN_PROGRESS
+  APPROVED
+  REJECTED
+}
+
+enum ThoughtPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ActivityType {
+  CREATED
+  UPDATED
+  STATUS_CHANGED
+  COMMENTED
+  DELETED
+  GITHUB_PUSH
+}
+
+enum OnboardingCategory {
+  DESIGN_SYSTEM    // Дизайн-система
+  GAME_FILES       // Базовые файлы игры
+  GUIDELINES       // Гайдлайны и правила
+  TOOLS            // Инструменты и процессы
+  REFERENCES       // Референсы и вдохновение
+  OTHER            // Другое
+}
+
+enum LoreType {
+  BACKSTORY // Предыстория
+  BIOGRAPHY // Биография персонажа
+  WORLD_BUILDING // Мироустроение
+  DIALOGUE // Диалоги
+  QUEST_TEXT // Тексты квестов
+  FLAVOR_TEXT // Флейвор-тексты (описания предметов)
+  EVENT // Игровые события
+  MYTHOLOGY // Мифология мира
+  OTHER // Другое
+}
+
+// ============================================
+// USER & AUTH
+// ============================================
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(VIEWER)
+  avatarUrl    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  sessions             Session[]
+  createdEntities      GameEntity[]
+  createdConceptArts   ConceptArt[]
+  createdLoreEntries   LoreEntry[]
+  createdThoughts      Thought[]            @relation("CreatedThoughts")
+  assignedThoughts     Thought[]            @relation("AssignedThoughts")
+  thoughtCategories    ThoughtCategory[]
+  thoughtComments      ThoughtComment[]
+  conceptArtComments   ConceptArtComment[]
+  loreComments         LoreComment[]
+  loreVersions         LoreEntryVersion[]
+  activityLogs         ActivityLog[]
+  createdOnboarding    OnboardingCard[]
+  onboardingComments   OnboardingComment[]
+  createdUnits         Unit[]               @relation("CreatedUnits")
+
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+// ============================================
+// GAME ENTITIES - Central concept
+// ============================================
+
+model GameEntity {
+  id               String         @id @default(cuid())
+  code             String         @unique
+  name             String
+  type             GameEntityType
+  description      String?        @db.Text
+  shortDescription String?
+  iconUrl          String?
+  createdById      String
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  createdBy            User                   @relation(fields: [createdById], references: [id])
+  conceptArts          ConceptArt[]
+  loreEntries          LoreEntry[] // Primary lore entries
+  loreEntryLinks       LoreEntryEntity[] // Many-to-many lore links
+  thoughts             Thought[]
+  activityLogs         ActivityLog[]
+  onboardingCardLinks  OnboardingCardEntity[]
+  factionUnits         Unit[]  @relation("FactionUnits") // Units belonging to this faction
+  unitProfile          Unit?   @relation("UnitProfile") // Unit stats when type=UNIT (1:1)
+  evolvedUnits         Unit[]  @relation("UnitPrevEvolution") // Units that evolved from this entity
+
+  @@index([type])
+  @@index([code])
+  @@map("game_entities")
+}
+
+// ============================================
+// CONCEPT ART MODULE
+// ============================================
+
+model ConceptArt {
+  id           String      @id @default(cuid())
+  title        String
+  description  String?     @db.Text
+  imageUrl     String
+  thumbnailUrl String?
+  status       AssetStatus @default(DRAFT)
+  tags         String[]    @default([])
+  entityId     String?
+  createdById  String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  entity    GameEntity?         @relation(fields: [entityId], references: [id], onDelete: SetNull)
+  createdBy User                @relation(fields: [createdById], references: [id])
+  comments  ConceptArtComment[]
+
+  @@index([status])
+  @@index([entityId])
+  @@map("concept_arts")
+}
+
+model ConceptArtComment {
+  id           String   @id @default(cuid())
+  content      String   @db.Text
+  conceptArtId String
+  authorId     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  conceptArt ConceptArt @relation(fields: [conceptArtId], references: [id], onDelete: Cascade)
+  author     User       @relation(fields: [authorId], references: [id])
+
+  @@index([conceptArtId])
+  @@map("concept_art_comments")
+}
+
+// ============================================
+// LORE / NARRATIVE MODULE
+// ============================================
+
+model LoreEntry {
+  id          String      @id @default(cuid())
+  title       String
+  content     String      @db.Text
+  summary     String?
+  loreType    LoreType    @default(OTHER)
+  status      AssetStatus @default(DRAFT)
+  version     Int         @default(1)
+  tags        String[]    @default([])
+  entityId    String? // Primary entity (for backwards compatibility)
+  createdById String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  entity         GameEntity?        @relation(fields: [entityId], references: [id], onDelete: SetNull)
+  createdBy      User               @relation(fields: [createdById], references: [id])
+  comments       LoreComment[]
+  versions       LoreEntryVersion[]
+  linkedEntities LoreEntryEntity[]
+
+  @@index([status])
+  @@index([entityId])
+  @@index([loreType])
+  @@map("lore_entries")
+}
+
+model LoreComment {
+  id          String   @id @default(cuid())
+  content     String   @db.Text
+  loreEntryId String
+  authorId    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  loreEntry LoreEntry @relation(fields: [loreEntryId], references: [id], onDelete: Cascade)
+  author    User      @relation(fields: [authorId], references: [id])
+
+  @@index([loreEntryId])
+  @@map("lore_comments")
+}
+
+model LoreEntryVersion {
+  id          String   @id @default(cuid())
+  loreEntryId String
+  version     Int
+  title       String
+  content     String   @db.Text
+  summary     String?
+  changedById String
+  changeNote  String?
+  createdAt   DateTime @default(now())
+
+  loreEntry LoreEntry @relation(fields: [loreEntryId], references: [id], onDelete: Cascade)
+  changedBy User      @relation(fields: [changedById], references: [id])
+
+  @@unique([loreEntryId, version])
+  @@index([loreEntryId])
+  @@map("lore_entry_versions")
+}
+
+model LoreEntryEntity {
+  id          String @id @default(cuid())
+  loreEntryId String
+  entityId    String
+
+  loreEntry LoreEntry  @relation(fields: [loreEntryId], references: [id], onDelete: Cascade)
+  entity    GameEntity @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  @@unique([loreEntryId, entityId])
+  @@index([loreEntryId])
+  @@index([entityId])
+  @@map("lore_entry_entities")
+}
+
+// ============================================
+// THOUGHTS MODULE (NEW)
+// ============================================
+
+model ThoughtCategory {
+  id          String   @id @default(cuid())
+  name        String
+  nameEn      String?
+  description String?
+  icon        String?  @default("Lightbulb") // Lucide icon name
+  color       String   @default("#6366f1")
+  sortOrder   Int      @default(0)
+  createdById String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  createdBy User      @relation(fields: [createdById], references: [id])
+  thoughts  Thought[]
+
+  @@map("thought_categories")
+}
+
+model Thought {
+  id              String          @id @default(cuid())
+  title           String
+  content         String          @db.Text
+  status          ThoughtStatus   @default(DRAFT)
+  priority        ThoughtPriority @default(MEDIUM)
+  categoryId      String?
+  entityId        String?
+  rejectionReason String?
+  tags            String[]        @default([])
+  links           String[]        @default([])
+  color           String?         @default("#6366f1")
+  isPinned        Boolean         @default(false)
+  createdById     String
+  assigneeId      String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  category  ThoughtCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  entity    GameEntity?      @relation(fields: [entityId], references: [id], onDelete: SetNull)
+  createdBy User             @relation("CreatedThoughts", fields: [createdById], references: [id])
+  assignee  User?            @relation("AssignedThoughts", fields: [assigneeId], references: [id])
+  comments  ThoughtComment[]
+
+  @@index([status])
+  @@index([categoryId])
+  @@index([createdById])
+  @@index([entityId])
+  @@map("thoughts")
+}
+
+model ThoughtComment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  thoughtId String
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  thought Thought @relation(fields: [thoughtId], references: [id], onDelete: Cascade)
+  author  User    @relation(fields: [authorId], references: [id])
+
+  @@index([thoughtId])
+  @@map("thought_comments")
+}
+
+// ============================================
+// UNITS MODULE (Disciples 2 Style)
+// ============================================
+
+enum UnitRole {
+  MELEE
+  RANGED
+  MAGE
+  SUPPORT
+}
+
+enum DamageSource {
+  WEAPON
+  AIR
+  FIRE
+  WATER
+  EARTH
+  LIFE
+  DEATH
+  MIND
+}
+
+enum AttackReach {
+  ADJACENT
+  ANY
+}
+
+model Unit {
+  id              String       @id @default(cuid())
+  entityId        String?      @unique // Links to GameEntity of type UNIT (1:1)
+  factionId       String
+  name            String
+  role            UnitRole     @default(MELEE)
+  level           Int          @default(1)
+  xpCurrent       Int          @default(0)
+  xpToNext        Int          @default(80)
+  hpMax           Int
+  armor           Int          @default(0)
+  immunities      Json         @default("[]")
+  wards           Json         @default("[]")
+  hpRegenPercent  Float        @default(0)
+  xpOnKill        Int          @default(0)
+  description     String?      @db.Text
+  createdById     String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  // Evolution tree - links to GameEntity of type UNIT
+  prevEvolutionId String?      // Previous step in evolution (unit this evolved from)
+  nextEvolutionIds String[]    @default([]) // Next evolution options (units this can evolve into)
+
+  entity        GameEntity? @relation("UnitProfile", fields: [entityId], references: [id], onDelete: SetNull)
+  faction       GameEntity  @relation("FactionUnits", fields: [factionId], references: [id], onDelete: Cascade)
+  prevEvolution GameEntity? @relation("UnitPrevEvolution", fields: [prevEvolutionId], references: [id], onDelete: SetNull)
+  createdBy     User        @relation("CreatedUnits", fields: [createdById], references: [id])
+  attacks       Attack[]
+
+  @@index([entityId])
+  @@index([factionId])
+  @@index([role])
+  @@index([prevEvolutionId])
+  @@map("units")
+}
+
+model Attack {
+  id           String       @id @default(cuid())
+  unitId       String
+  name         String
+  hitChance    Float        @default(0.8)
+  damage       Int?
+  heal         Int?
+  damageSource DamageSource @default(WEAPON)
+  initiative   Int          @default(50)
+  reach        AttackReach  @default(ADJACENT)
+  targets      Int          @default(1)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  unit Unit @relation(fields: [unitId], references: [id], onDelete: Cascade)
+
+  @@index([unitId])
+  @@map("attacks")
+}
+
+// ============================================
+// ACTIVITY LOG
+// ============================================
+
+model ActivityLog {
+  id          String       @id @default(cuid())
+  type        ActivityType
+  description String
+  metadata    Json?
+  entityId    String?
+  userId      String?
+  createdAt   DateTime     @default(now())
+
+  entity GameEntity? @relation(fields: [entityId], references: [id], onDelete: SetNull)
+  user   User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([entityId])
+  @@index([createdAt])
+  @@map("activity_logs")
+}
+
+// ============================================
+// ONBOARDING MODULE
+// ============================================
+
+model OnboardingCard {
+  id          String             @id @default(cuid())
+  title       String
+  description String?            @db.Text
+  category    OnboardingCategory @default(OTHER)
+  status      AssetStatus        @default(DRAFT)
+  order       Int                @default(0)
+  isPinned    Boolean            @default(false)
+  tags        String[]           @default([])
+  links       String[]           @default([]) // External links and references
+  parentId    String?                         // For nested cards
+  createdById String
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  parent         OnboardingCard?        @relation("CardHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children       OnboardingCard[]       @relation("CardHierarchy")
+  createdBy      User                   @relation(fields: [createdById], references: [id])
+  images         OnboardingImage[]
+  comments       OnboardingComment[]
+  linkedEntities OnboardingCardEntity[]
+
+  @@index([category])
+  @@index([status])
+  @@index([parentId])
+  @@index([order])
+  @@map("onboarding_cards")
+}
+
+model OnboardingImage {
+  id        String   @id @default(cuid())
+  cardId    String
+  imageUrl  String
+  caption   String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  card OnboardingCard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@index([cardId])
+  @@index([order])
+  @@map("onboarding_images")
+}
+
+model OnboardingComment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  cardId    String
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  card   OnboardingCard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  author User           @relation(fields: [authorId], references: [id])
+
+  @@index([cardId])
+  @@map("onboarding_comments")
+}
+
+model OnboardingCardEntity {
+  id       String @id @default(cuid())
+  cardId   String
+  entityId String
+
+  card   OnboardingCard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  entity GameEntity     @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  @@unique([cardId, entityId])
+  @@index([cardId])
+  @@index([entityId])
+  @@map("onboarding_card_entities")
+}

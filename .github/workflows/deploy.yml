@@ -1,0 +1,62 @@
+# ===========================================
+# Sapients Production OS - Deploy Workflow
+# ===========================================
+# Deploys to production server via SSH on push to main branch
+
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🚀 Deploy to Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            cd /var/www/sapients
+            
+            echo "📥 Pulling latest changes..."
+            git fetch origin main
+            git reset --hard origin/main
+            
+            echo "📦 Installing dependencies..."
+            npm ci --production=false
+            
+            echo "🔨 Building application..."
+            npm run build
+            
+            echo "🗃️ Running database migrations..."
+            npx prisma migrate deploy
+            
+            echo "♻️ Restarting application..."
+            pm2 reload sapients --update-env || pm2 start ecosystem.config.js
+            
+            echo "✅ Deployment complete!"
+
+  # Optional: Notify on success/failure
+  notify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: 📢 Deployment Status
+        run: |
+          if [ "${{ needs.deploy.result }}" == "success" ]; then
+            echo "✅ Deployment successful!"
+          else
+            echo "❌ Deployment failed!"
+            exit 1
+          fi
