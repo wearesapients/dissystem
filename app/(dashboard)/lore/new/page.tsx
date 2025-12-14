@@ -54,3 +54,4 @@ export default async function NewLorePage({ searchParams }: PageProps) {
   )
 }
 
+

@@ -13,6 +13,7 @@ import {
   GameEntityType,
   ConceptArtSort
 } from '@/lib/concept-art/service'
+import { notifyConceptArtCreated } from '@/lib/push/notify'
 
 export async function GET(request: NextRequest) {
   try {
@@ -88,6 +89,9 @@ export async function POST(request: NextRequest) {
       tags: body.tags || [],
       entityId: body.entityId || null,
     }, user.id)
+    
+    // Send push notification
+    notifyConceptArtCreated(user.id, art.title, art.id, art.entity?.name).catch(console.error)
     
     return NextResponse.json(art, { status: 201 })
   } catch (error) {

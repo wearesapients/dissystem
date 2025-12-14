@@ -6,11 +6,11 @@
 
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { cn } from '@/lib/utils'
 import { useLocale } from '@/lib/locale-context'
 import { t } from '@/lib/i18n'
-import { LogOut, Globe, ChevronDown } from 'lucide-react'
+import { LogOut, Globe, ChevronDown, Bell, BellOff, Loader2 } from 'lucide-react'
 import { Role } from '@prisma/client'
 import { canViewModule, type Module } from '@/lib/auth/permissions'
 import {
@@ -314,7 +314,7 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
         </div>
         
         {/* Bottom actions */}
-        <div className="mt-3 flex items-center justify-between">
+        <div className="mt-3 flex items-center justify-between gap-1">
           {/* Language Switcher */}
           <button
             onClick={() => setLocale(locale === 'en' ? 'ru' : 'en')}
@@ -323,6 +323,9 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
             <Globe size={14} strokeWidth={1.5} />
             <span className="uppercase font-medium">{locale}</span>
           </button>
+          
+          {/* Push Notifications */}
+          <PushNotificationButton />
           
           {/* Logout */}
           <form action="/api/auth/logout" method="POST">
@@ -336,4 +339,144 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
     </aside>
     </>
   )
+}
+
+// ============================================
+// Push Notification Button (inline component)
+// ============================================
+
+function PushNotificationButton() {
+  const [isSubscribed, setIsSubscribed] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [permission, setPermission] = useState<'prompt' | 'granted' | 'denied' | 'unsupported'>('prompt')
+
+  useEffect(() => {
+    checkPushSupport()
+  }, [])
+
+  const checkPushSupport = useCallback(async () => {
+    if (typeof window === 'undefined') return
+    
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      setPermission('unsupported')
+      setIsLoading(false)
+      return
+    }
+
+    const currentPermission = Notification.permission as 'prompt' | 'granted' | 'denied'
+    setPermission(currentPermission)
+
+    if (currentPermission === 'denied') {
+      setIsLoading(false)
+      return
+    }
+
+    try {
+      const registration = await navigator.serviceWorker.ready
+      const subscription = await registration.pushManager.getSubscription()
+      setIsSubscribed(!!subscription)
+    } catch (error) {
+      console.error('[Push] Error checking subscription:', error)
+    }
+    
+    setIsLoading(false)
+  }, [])
+
+  const togglePush = async () => {
+    setIsLoading(true)
+
+    try {
+      if (isSubscribed) {
+        // Unsubscribe
+        const registration = await navigator.serviceWorker.ready
+        const subscription = await registration.pushManager.getSubscription()
+        if (subscription) {
+          await subscription.unsubscribe()
+          await fetch('/api/push/unsubscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ endpoint: subscription.endpoint })
+          })
+        }
+        setIsSubscribed(false)
+      } else {
+        // Subscribe
+        await navigator.serviceWorker.register('/sw.js')
+        await navigator.serviceWorker.ready
+
+        const permissionResult = await Notification.requestPermission()
+        setPermission(permissionResult as 'prompt' | 'granted' | 'denied')
+
+        if (permissionResult !== 'granted') {
+          setIsLoading(false)
+          return
+        }
+
+        const vapidResponse = await fetch('/api/push/vapid-key')
+        if (!vapidResponse.ok) throw new Error('VAPID key not available')
+        const { publicKey } = await vapidResponse.json()
+
+        const registration = await navigator.serviceWorker.ready
+        const subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(publicKey)
+        })
+
+        await fetch('/api/push/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subscription: subscription.toJSON() })
+        })
+
+        setIsSubscribed(true)
+      }
+    } catch (error) {
+      console.error('[Push] Toggle error:', error)
+    }
+
+    setIsLoading(false)
+  }
+
+  if (permission === 'unsupported') return null
+
+  return (
+    <button
+      onClick={togglePush}
+      disabled={isLoading || permission === 'denied'}
+      className={cn(
+        'flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs transition-all',
+        isSubscribed
+          ? 'text-[#A89C6A] bg-[#A89C6A]/10 hover:bg-[#A89C6A]/20'
+          : permission === 'denied'
+          ? 'text-[#C7BFAE]/20 cursor-not-allowed'
+          : 'text-[#C7BFAE]/40 hover:text-[#C7BFAE]/70 hover:bg-[#6A665E]/10'
+      )}
+      title={
+        permission === 'denied'
+          ? 'Уведомления заблокированы'
+          : isSubscribed
+          ? 'Уведомления включены'
+          : 'Включить уведомления'
+      }
+    >
+      {isLoading ? (
+        <Loader2 size={14} strokeWidth={1.5} className="animate-spin" />
+      ) : isSubscribed ? (
+        <Bell size={14} strokeWidth={1.5} />
+      ) : (
+        <BellOff size={14} strokeWidth={1.5} />
+      )}
+    </button>
+  )
+}
+
+function urlBase64ToUint8Array(base64String: string): ArrayBuffer {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/')
+  const rawData = window.atob(base64)
+  const outputArray = new Uint8Array(rawData.length)
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i)
+  }
+  return outputArray.buffer as ArrayBuffer
 }

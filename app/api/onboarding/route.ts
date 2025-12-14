@@ -14,6 +14,7 @@ import {
   OnboardingCategory,
   OnboardingSort
 } from '@/lib/onboarding/service'
+import { notifyOnboardingCreated } from '@/lib/push/notify'
 
 export async function GET(request: NextRequest) {
   try {
@@ -74,6 +75,9 @@ export async function POST(request: NextRequest) {
     }
     
     const card = await createOnboardingCard(body, session.user.id)
+    
+    // Send push notification
+    notifyOnboardingCreated(session.user.id, card.title, card.id).catch(console.error)
     
     return NextResponse.json({ success: true, data: card }, { status: 201 })
   } catch (error) {

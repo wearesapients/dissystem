@@ -209,3 +209,4 @@ export function EntityArtGroup({ entity, arts }: EntityArtGroupProps) {
   )
 }
 
+

@@ -103,6 +103,7 @@ model User {
   updatedAt    DateTime @updatedAt
 
   sessions             Session[]
+  pushSubscriptions    PushSubscription[]
   createdEntities      GameEntity[]
   createdConceptArts   ConceptArt[]
   createdLoreEntries   LoreEntry[]
@@ -129,6 +130,20 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @unique
+  p256dh    String   // Public key for encryption
+  auth      String   // Auth secret
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("push_subscriptions")
 }
 
 // ============================================

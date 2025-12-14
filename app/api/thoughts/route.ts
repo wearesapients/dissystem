@@ -7,6 +7,7 @@ import { getSession } from '@/lib/auth/session'
 import { canViewModule, canEditModule } from '@/lib/auth/permissions'
 import { getThoughts, createThought, getThoughtsStats, getAllTags } from '@/lib/thoughts/service'
 import { ThoughtStatus, ThoughtPriority } from '@prisma/client'
+import { notifyThoughtCreated } from '@/lib/push/notify'
 
 export async function GET(request: NextRequest) {
   try {
@@ -66,6 +67,9 @@ export async function POST(request: NextRequest) {
     }
     
     const thought = await createThought(body, session.user.id)
+    
+    // Send push notification
+    notifyThoughtCreated(session.user.id, thought.title, thought.id).catch(console.error)
     
     return NextResponse.json({ success: true, data: thought }, { status: 201 })
   } catch (error) {

@@ -9,6 +9,7 @@ import { getSession } from '@/lib/auth/session'
 import { canEditModule, canViewModule } from '@/lib/auth/permissions'
 import { getEntitiesForDropdown, createEntity, getEntityByCode, generateEntityCode } from '@/lib/entities/service'
 import { getAssignableUsers } from '@/lib/thoughts/service'
+import { notifyEntityCreated } from '@/lib/push/notify'
 
 export async function GET() {
   try {
@@ -76,6 +77,9 @@ export async function POST(request: NextRequest) {
       shortDescription: shortDescription?.trim() || null,
       iconUrl: iconUrl?.trim() || null,
     }, session.user.id)
+    
+    // Send push notification to all other users
+    notifyEntityCreated(session.user.id, entity.name, entity.type, entity.id).catch(console.error)
     
     return NextResponse.json({ 
       success: true, 

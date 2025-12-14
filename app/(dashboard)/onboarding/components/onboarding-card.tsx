@@ -218,3 +218,4 @@ export function OnboardingCard({ card }: OnboardingCardProps) {
   )
 }
 
+

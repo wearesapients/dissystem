@@ -15,6 +15,7 @@ import {
   GameEntityType,
   LoreSort
 } from '@/lib/lore/service'
+import { notifyLoreCreated } from '@/lib/push/notify'
 
 export async function GET(request: NextRequest) {
   try {
@@ -76,6 +77,9 @@ export async function POST(request: NextRequest) {
     }
     
     const entry = await createLoreEntry(body, session.user.id)
+    
+    // Send push notification
+    notifyLoreCreated(session.user.id, entry.title, entry.id, entry.entity?.name).catch(console.error)
     
     return NextResponse.json({ success: true, data: entry }, { status: 201 })
   } catch (error) {
