@@ -193,7 +193,7 @@ export function ThoughtsOverviewCards({
         </div>
         
         <p className="text-sm text-white/50 mb-4">
-          {locale === 'ru' ? 'Мысли без привязки к сущности' : 'Thoughts without entity link'}
+          {locale === 'ru' ? 'Мысли без привязки к объекту' : 'Thoughts without entity link'}
         </p>
         
         {recentUnlinked.length > 0 ? (

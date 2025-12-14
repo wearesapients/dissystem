@@ -19,7 +19,7 @@ export function EntityEmptyState({ type }: EntityEmptyStateProps) {
   return (
     <div className="glass-card p-12 text-center">
       <p className="text-white/50 mb-4">
-        {locale === 'ru' ? 'Нет сущностей этого типа' : 'No entities of this type'}
+        {locale === 'ru' ? 'Нет объектов этого типа' : 'No entities of this type'}
       </p>
       <Link 
         href={type ? `/entities/new?type=${type}` : '/entities/new'} 

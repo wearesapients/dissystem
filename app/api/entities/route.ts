@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     
     // Check edit permission for entities module
     if (!canEditModule(session.user.role, 'entities')) {
-      return NextResponse.json({ error: 'Нет прав на создание сущностей' }, { status: 403 })
+      return NextResponse.json({ error: 'Нет прав на создание объектов' }, { status: 403 })
     }
     
     const body = await request.json()
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     }
     
     if (!type) {
-      return NextResponse.json({ error: 'Тип сущности обязателен' }, { status: 400 })
+      return NextResponse.json({ error: 'Тип объекта обязателен' }, { status: 400 })
     }
     
     // Generate or use provided code
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
       // Check if code already exists
       const existing = await getEntityByCode(code)
       if (existing) {
-        return NextResponse.json({ error: 'Сущность с таким кодом уже существует' }, { status: 400 })
+        return NextResponse.json({ error: 'Объект с таким кодом уже существует' }, { status: 400 })
       }
     }
     
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
     }, { status: 201 })
   } catch (error) {
     console.error('Create entity error:', error)
-    return NextResponse.json({ error: 'Ошибка создания сущности' }, { status: 500 })
+    return NextResponse.json({ error: 'Ошибка создания объекта' }, { status: 500 })
   }
 }
 

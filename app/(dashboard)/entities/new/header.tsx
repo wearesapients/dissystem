@@ -28,7 +28,7 @@ export function NewEntityHeader() {
         </h1>
         <p className="text-white/50">
           {locale === 'ru' 
-            ? 'Создайте новую игровую сущность для связи с концептами, лором и мыслями'
+            ? 'Создайте новый игровой объект для связи с концептами, лором и мыслями'
             : 'Create a new game entity to link with concepts, lore and thoughts'
           }
         </p>

@@ -41,7 +41,7 @@ export function EntitiesHeader({ total, typeName }: EntitiesHeaderProps) {
         className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white mb-3 sm:mb-4 transition-colors"
       >
         <ArrowLeft size={16} strokeWidth={1.5} />
-        {locale === 'ru' ? 'К обзору сущностей' : 'Back to entities'}
+        {locale === 'ru' ? 'К обзору объектов' : 'Back to entities'}
       </Link>
       
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -50,7 +50,7 @@ export function EntitiesHeader({ total, typeName }: EntitiesHeaderProps) {
             {displayTypeName}
           </h1>
           <p className="text-sm sm:text-base text-white/50">
-            {total} {locale === 'ru' ? 'сущностей' : 'entities'}
+            {total} {locale === 'ru' ? 'объектов' : 'entities'}
           </p>
         </div>
         <Link href="/entities/new" className="btn btn-primary w-full sm:w-auto justify-center">

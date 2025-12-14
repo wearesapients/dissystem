@@ -49,7 +49,7 @@ export default async function NewThoughtPage({ searchParams }: PageProps) {
       <h1 className="text-3xl font-bold text-white mb-2">Новая мысль</h1>
       {preSelectedEntity && (
         <p className="text-white/50 mb-8">
-          Для сущности: <span className="text-[#A89C6A]">{preSelectedEntity.name}</span>
+          Для объекта: <span className="text-[#A89C6A]">{preSelectedEntity.name}</span>
         </p>
       )}
       {!preSelectedEntity && <div className="mb-8" />}

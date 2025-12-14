@@ -137,7 +137,7 @@ export default async function LoreDetailPage({ params }: PageProps) {
             <div className="glass-card p-5">
               <h4 className="font-medium text-white flex items-center gap-2 mb-4">
                 <Link2 size={16} strokeWidth={1.5} className="text-[#A89C6A]" />
-                Связанные сущности
+                Связанные объекты
               </h4>
               <div className="space-y-2">
                 {allEntities.map((entity) => entity && (

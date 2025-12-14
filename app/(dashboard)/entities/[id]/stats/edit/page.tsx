@@ -110,7 +110,7 @@ export default async function EditUnitStatsPage({ params }: PageProps) {
         className="text-white/50 hover:text-white inline-flex items-center gap-2 transition-colors mb-6"
       >
         <ArrowLeft size={16} strokeWidth={1.5} />
-        Назад к сущности
+        Назад к объекту
       </Link>
       
       <div className="glass-card p-6 mb-6">

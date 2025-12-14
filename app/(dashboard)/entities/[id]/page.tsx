@@ -80,7 +80,7 @@ export default async function EntityDetailPage({ params }: PageProps) {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <Link href="/entities" className="text-white/50 hover:text-white inline-flex items-center gap-2 transition-colors">
           <ArrowLeft size={16} strokeWidth={1.5} />
-          Назад к сущностям
+          Назад к объектам
         </Link>
         
         <div className="flex items-center gap-3 w-full sm:w-auto">

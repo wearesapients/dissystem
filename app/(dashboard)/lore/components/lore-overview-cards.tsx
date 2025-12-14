@@ -193,7 +193,7 @@ export function LoreOverviewCards({
         </div>
         
         <p className="text-sm text-white/50 mb-4">
-          {locale === 'ru' ? 'Лор без привязки к сущности' : 'Lore without entity link'}
+          {locale === 'ru' ? 'Лор без привязки к объекту' : 'Lore without entity link'}
         </p>
         
         {recentUnlinked.length > 0 ? (

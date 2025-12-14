@@ -23,7 +23,7 @@ export function EntitiesOverviewHeader({ total }: EntitiesOverviewHeaderProps) {
           {t('entities.title', locale)}
         </h1>
         <p className="text-sm sm:text-base text-white/50">
-          {total} {locale === 'ru' ? 'сущностей всего' : 'entities total'}
+          {total} {locale === 'ru' ? 'объектов всего' : 'entities total'}
         </p>
       </div>
       <Link href="/entities/new" className="btn btn-primary w-full sm:w-auto justify-center">

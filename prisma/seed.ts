@@ -456,14 +456,14 @@ async function main() {
     data: [
       {
         type: 'CREATED',
-        description: 'Создана сущность "Некромант"',
+        description: 'Создан объект "Некромант"',
         entityId: necromancer.id,
         userId: admin.id,
         metadata: { itemType: 'entity', itemId: necromancer.id },
       },
       {
         type: 'CREATED',
-        description: 'Создана сущность "Паладин"',
+        description: 'Создан объект "Паладин"',
         entityId: paladin.id,
         userId: admin.id,
         metadata: { itemType: 'entity', itemId: paladin.id },

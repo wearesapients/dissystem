@@ -23,11 +23,11 @@ export async function notifyEntityCreated(
     ARTIFACT: 'Артефакт',
     LOCATION: 'Локация',
     OBJECT: 'Объект',
-    OTHER: 'Сущность'
+    OTHER: 'Объект'
   }
   
   const payload: PushPayload = {
-    title: `Новая сущность: ${entityName}`,
+    title: `Новый объект: ${entityName}`,
     body: `Добавлен ${typeLabels[entityType] || 'объект'}: ${entityName}`,
     url: `/entities/${entityId}`,
     tag: `entity-${entityId}`

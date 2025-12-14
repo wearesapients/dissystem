@@ -154,7 +154,7 @@ export function ConceptArtFilters({
         <div>
           <p className="text-xs text-white/40 uppercase tracking-wide mb-2 flex items-center gap-1.5">
             <Layers size={12} />
-            Тип сущности
+            Тип объекта
           </p>
           <div className="space-y-1">
             {entityTypeOptions.map(opt => (

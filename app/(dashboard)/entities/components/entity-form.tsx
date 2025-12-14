@@ -229,7 +229,7 @@ export function EntityForm({ entity }: FormProps) {
             value={name}
             onChange={e => handleNameChange(e.target.value)}
             className="input"
-            placeholder={locale === 'ru' ? 'Введите название сущности' : 'Enter entity name'}
+            placeholder={locale === 'ru' ? 'Введите название объекта' : 'Enter entity name'}
             required
           />
         </div>
@@ -310,7 +310,7 @@ export function EntityForm({ entity }: FormProps) {
             onChange={e => setDescription(e.target.value)}
             className="input min-h-[160px] resize-y"
             placeholder={locale === 'ru' 
-              ? 'Подробное описание сущности, её роль в игре, особенности...' 
+              ? 'Подробное описание объекта, его роль в игре, особенности...' 
               : 'Detailed description of the entity, its role in the game, features...'}
           />
         </div>

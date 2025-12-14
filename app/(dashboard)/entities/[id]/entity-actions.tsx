@@ -70,7 +70,7 @@ export function EntityActions({ entityId, entityName, userRole }: EntityActionsP
               className="w-full flex items-center gap-3 px-4 py-3 text-[#9A4A4A] hover:bg-[#5A1E1E]/10 transition-colors"
             >
               <Trash2 size={16} strokeWidth={1.5} />
-              Удалить сущность
+              Удалить объект
             </button>
           </div>
         </>
@@ -80,7 +80,7 @@ export function EntityActions({ entityId, entityName, userRole }: EntityActionsP
         isOpen={showDeleteConfirm}
         onClose={() => setShowDeleteConfirm(false)}
         onConfirm={handleDelete}
-        title="Удаление сущности"
+        title="Удаление объекта"
         description="Связи с концепт-артами, лором и мыслями будут удалены, но сами записи сохранятся."
         itemName={entityName}
       />

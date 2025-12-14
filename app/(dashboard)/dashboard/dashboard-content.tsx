@@ -251,7 +251,7 @@ function ActivityRow({ activity }: { activity: Activity }) {
     }
     
     // Default based on description
-    if (desc.includes('сущност') || desc.includes('entity')) {
+    if (desc.includes('объект') || desc.includes('entity')) {
       return '/entities'
     }
     

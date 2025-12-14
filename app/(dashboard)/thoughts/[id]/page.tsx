@@ -160,7 +160,7 @@ export default async function ThoughtDetailPage({ params }: PageProps) {
           {/* Linked Entity */}
           {thought.entity && (
             <div className="glass-card p-5">
-              <h3 className="text-sm font-medium text-white/60 mb-3">Связанная сущность</h3>
+              <h3 className="text-sm font-medium text-white/60 mb-3">Связанный объект</h3>
               <Link
                 href={`/entities/${thought.entity.id}`}
                 className="flex items-center gap-3 p-3 bg-[#A89C6A]/10 border border-[#A89C6A]/30 rounded-xl hover:bg-[#A89C6A]/15 transition-colors"

@@ -178,7 +178,7 @@ export async function createEntity(data: CreateEntityInput, userId: string) {
   await db.activityLog.create({
     data: {
       type: 'CREATED',
-      description: `Создана сущность "${entity.name}"`,
+      description: `Создан объект "${entity.name}"`,
       entityId: entity.id,
       userId,
       metadata: {
@@ -223,7 +223,7 @@ export async function updateEntity(id: string, data: UpdateEntityInput, userId: 
   await db.activityLog.create({
     data: {
       type: 'UPDATED',
-      description: `Обновлена сущность "${entity.name}"${changes.length > 0 ? `: ${changes.join(', ')}` : ''}`,
+      description: `Обновлён объект "${entity.name}"${changes.length > 0 ? `: ${changes.join(', ')}` : ''}`,
       entityId: entity.id,
       userId,
       metadata: {
@@ -251,7 +251,7 @@ export async function deleteEntity(id: string, userId: string) {
   await db.activityLog.create({
     data: {
       type: 'DELETED',
-      description: `Удалена сущность "${entity.name}"`,
+      description: `Удалён объект "${entity.name}"`,
       userId,
     },
   })

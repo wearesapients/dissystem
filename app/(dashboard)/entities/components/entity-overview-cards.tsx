@@ -104,7 +104,7 @@ export function EntityOverviewCards({ stats, recentByType }: EntityOverviewCards
       icon: HelpCircle, 
       labelRu: 'Другое', 
       labelEn: 'Other',
-      descRu: 'Прочие сущности',
+      descRu: 'Прочие объекты',
       descEn: 'Miscellaneous entities',
       color: 'from-[#5F646B]/15 to-[#5F646B]/5',
       iconColor: '#8A8F96',
@@ -174,7 +174,7 @@ export function EntityOverviewCards({ stats, recentByType }: EntityOverviewCards
               </div>
             ) : (
               <div className="py-4 text-center text-sm text-white/30 mb-4">
-                {locale === 'ru' ? 'Нет сущностей' : 'No entities'}
+                {locale === 'ru' ? 'Нет объектов' : 'No entities'}
               </div>
             )}
             

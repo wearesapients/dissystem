@@ -225,7 +225,7 @@ export default async function OnboardingDetailPage({ params }: PageProps) {
             <div className="glass-card p-5">
               <h3 className="flex items-center gap-2 text-sm font-medium text-white mb-3">
                 <Link2 size={16} strokeWidth={1.5} className="text-[#7A8A5C]" />
-                Связанные сущности
+                Связанные объекты
               </h3>
               <div className="space-y-2">
                 {card.linkedEntities.map(le => (

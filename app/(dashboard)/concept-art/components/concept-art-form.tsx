@@ -571,7 +571,7 @@ export function ConceptArtForm({ art, entities, existingTags = [], preSelectedEn
       <div className="glass-card p-5">
         <label className="flex items-center gap-2 text-sm font-medium text-white mb-3">
           <Link2 size={16} strokeWidth={1.5} className="text-[#A89C6A]" />
-          Привязка к сущности
+          Привязка к объекту
           <span className="text-white/40 font-normal">(рекомендуется)</span>
         </label>
         
@@ -600,7 +600,7 @@ export function ConceptArtForm({ art, entities, existingTags = [], preSelectedEn
               className="w-full p-4 border-2 border-dashed border-white/20 rounded-xl text-white/50 hover:border-[#A89C6A]/50 hover:text-[#A89C6A] transition-all flex items-center justify-center gap-2"
             >
               <Link2 size={18} strokeWidth={1.5} />
-              Выбрать сущность
+              Выбрать объект
             </button>
             
             {showEntityPicker && (
@@ -610,7 +610,7 @@ export function ConceptArtForm({ art, entities, existingTags = [], preSelectedEn
                   <Search size={16} strokeWidth={1.5} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
                   <input
                     type="text"
-                    placeholder="Поиск сущности..."
+                    placeholder="Поиск объекта..."
                     value={entitySearch}
                     onChange={e => setEntitySearch(e.target.value)}
                     className="w-full py-2 pl-10 pr-4 bg-white/5 border border-white/10 rounded-lg text-sm text-white"
@@ -646,7 +646,7 @@ export function ConceptArtForm({ art, entities, existingTags = [], preSelectedEn
                 ))}
                 
                 {Object.keys(filteredGroups).length === 0 && (
-                  <p className="text-center text-white/40 py-4">Сущности не найдены</p>
+                  <p className="text-center text-white/40 py-4">Объекты не найдены</p>
                 )}
               </div>
             )}

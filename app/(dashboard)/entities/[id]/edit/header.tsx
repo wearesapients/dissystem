@@ -24,7 +24,7 @@ export function EditEntityHeader({ entityId, entityName }: EditEntityHeaderProps
         className="text-white/50 hover:text-white mb-6 inline-flex items-center gap-2 transition-colors"
       >
         <ArrowLeft size={16} strokeWidth={1.5} />
-        {locale === 'ru' ? 'Назад к сущности' : 'Back to entity'}
+        {locale === 'ru' ? 'Назад к объекту' : 'Back to entity'}
       </Link>
       
       <div className="mb-8">

@@ -25,7 +25,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const entity = await getEntity(id)
     
     if (!entity) {
-      return NextResponse.json({ error: 'Сущность не найдена' }, { status: 404 })
+      return NextResponse.json({ error: 'Объект не найден' }, { status: 404 })
     }
     
     return NextResponse.json({ 
@@ -47,14 +47,14 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     
     // Check edit permission
     if (!canEditModule(session.user.role, 'entities')) {
-      return NextResponse.json({ error: 'Нет прав на редактирование сущностей' }, { status: 403 })
+      return NextResponse.json({ error: 'Нет прав на редактирование объектов' }, { status: 403 })
     }
     
     const { id } = await params
     const existingEntity = await getEntity(id)
     
     if (!existingEntity) {
-      return NextResponse.json({ error: 'Сущность не найдена' }, { status: 404 })
+      return NextResponse.json({ error: 'Объект не найден' }, { status: 404 })
     }
     
     const body = await request.json()
@@ -69,7 +69,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     if (code && code.toUpperCase() !== existingEntity.code) {
       const existingCode = await getEntityByCode(code.toUpperCase())
       if (existingCode) {
-        return NextResponse.json({ error: 'Сущность с таким кодом уже существует' }, { status: 400 })
+        return NextResponse.json({ error: 'Объект с таким кодом уже существует' }, { status: 400 })
       }
     }
     
@@ -88,7 +88,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     })
   } catch (error) {
     console.error('Update entity error:', error)
-    return NextResponse.json({ error: 'Ошибка обновления сущности' }, { status: 500 })
+    return NextResponse.json({ error: 'Ошибка обновления объекта' }, { status: 500 })
   }
 }
 
@@ -114,18 +114,18 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     const entity = await getEntity(id)
     
     if (!entity) {
-      return NextResponse.json({ error: 'Сущность не найдена' }, { status: 404 })
+      return NextResponse.json({ error: 'Объект не найден' }, { status: 404 })
     }
     
     await deleteEntity(id, session.user.id)
     
     return NextResponse.json({ 
       success: true, 
-      message: 'Сущность удалена' 
+      message: 'Объект удалён' 
     })
   } catch (error) {
     console.error('Delete entity error:', error)
-    return NextResponse.json({ error: 'Ошибка удаления сущности' }, { status: 500 })
+    return NextResponse.json({ error: 'Ошибка удаления объекта' }, { status: 500 })
   }
 }
 

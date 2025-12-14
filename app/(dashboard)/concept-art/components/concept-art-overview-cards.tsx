@@ -215,7 +215,7 @@ export function ConceptArtOverviewCards({
                   {locale === 'ru' ? 'Без привязки' : 'Unlinked'}
                 </h3>
                 <p className="text-sm text-white/50">
-                  {unlinkedCount} {locale === 'ru' ? 'работ без сущности' : 'works without entity'}
+                  {unlinkedCount} {locale === 'ru' ? 'работ без объекта' : 'works without entity'}
                 </p>
               </div>
             </div>

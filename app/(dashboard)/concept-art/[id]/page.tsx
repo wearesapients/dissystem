@@ -177,7 +177,7 @@ export default async function ConceptArtDetailPage({ params }: PageProps) {
           {/* Linked Entity */}
           {art.entity && (
             <div className="glass-card p-6">
-              <h3 className="text-sm font-medium text-white/60 mb-3">Привязка к сущности</h3>
+              <h3 className="text-sm font-medium text-white/60 mb-3">Привязка к объекту</h3>
               <Link
                 href={`/entities/${art.entity.id}`}
                 className="flex items-center gap-3 p-3 bg-[#A89C6A]/10 border border-[#A89C6A]/30 rounded-xl hover:bg-[#A89C6A]/15 transition-colors"
