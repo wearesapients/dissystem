@@ -38,7 +38,7 @@ jobs:
             npm run build
             
             echo "🗃️ Running database migrations..."
-            npx prisma migrate deploy
+            ./node_modules/.bin/prisma migrate deploy || ./node_modules/.bin/prisma db push
             
             echo "♻️ Restarting application..."
             pm2 reload sapients --update-env || pm2 start ecosystem.config.js
