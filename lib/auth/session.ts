@@ -36,9 +36,11 @@ export async function createSession(user: User): Promise<string> {
 
 export async function setSessionCookie(token: string): Promise<void> {
   const cookieStore = await cookies()
+  // Note: secure should be true when HTTPS is configured
+  const isHttps = process.env.NEXT_PUBLIC_APP_URL?.startsWith('https')
   cookieStore.set(SESSION_COOKIE, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: isHttps ?? false,
     sameSite: 'lax',
     path: '/',
     maxAge: SESSION_DURATION / 1000,
