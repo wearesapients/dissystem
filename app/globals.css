@@ -48,6 +48,12 @@ body {
   font-family: var(--font-sans);
   background: var(--abyss-black);
   min-height: 100vh;
+  min-height: 100dvh;
+  /* Safe area support for notch/dynamic island */
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
   color: var(--candle-bone);
   -webkit-font-smoothing: antialiased;
 }
