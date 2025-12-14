@@ -355,9 +355,25 @@ function PushNotificationButton() {
   }, [])
 
   const checkPushSupport = useCallback(async () => {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined') {
+      setIsLoading(false)
+      return
+    }
     
-    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    // Check basic support
+    if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) {
+      setPermission('unsupported')
+      setIsLoading(false)
+      return
+    }
+
+    // Check for iOS - push only works in PWA mode on iOS 16.4+
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                         (window.navigator as unknown as { standalone?: boolean }).standalone === true
+    
+    if (isIOS && !isStandalone) {
+      // On iOS, push only works when added to home screen
       setPermission('unsupported')
       setIsLoading(false)
       return
@@ -371,10 +387,22 @@ function PushNotificationButton() {
       return
     }
 
+    // Use timeout to prevent hanging
+    const timeoutPromise = new Promise<null>((resolve) => setTimeout(() => resolve(null), 3000))
+    
     try {
-      const registration = await navigator.serviceWorker.ready
-      const subscription = await registration.pushManager.getSubscription()
-      setIsSubscribed(!!subscription)
+      const registration = await Promise.race([
+        navigator.serviceWorker.getRegistration(),
+        timeoutPromise
+      ])
+      
+      if (registration) {
+        const subscription = await Promise.race([
+          registration.pushManager.getSubscription(),
+          timeoutPromise
+        ])
+        setIsSubscribed(!!subscription)
+      }
     } catch (error) {
       console.error('[Push] Error checking subscription:', error)
     }
