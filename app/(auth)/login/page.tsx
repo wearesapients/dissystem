@@ -33,8 +33,8 @@ export default function LoginPage() {
         return
       }
       
-      router.push('/dashboard')
-      router.refresh()
+      // Full page redirect to ensure cookie is applied
+      window.location.href = '/dashboard'
     } catch {
       setError('Connection error')
     } finally {
@@ -49,7 +49,7 @@ export default function LoginPage() {
           <img 
             src="/logo-icon.png" 
             alt="Desolates" 
-            className="w-16 h-16 mx-auto mb-4 object-contain"
+            className="w-32 h-32 mx-auto mb-4 object-contain"
           />
           <h1 className="text-2xl font-bold text-[#c9a66b] tracking-widest mb-1">DESOLATES</h1>
           <p className="text-white/50 text-sm">Production OS</p>
