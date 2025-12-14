@@ -77,13 +77,13 @@ export function LoreStatusCards({ stats, currentStatus }: StatusCardsProps) {
               isActive ? 'ring-2 ring-[#A89C6A] bg-[#A89C6A]/10' : ''
             }`}
           >
-            <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-xl ${card.bgColor} flex items-center justify-center`}>
-                <Icon size={20} strokeWidth={1.5} className={card.color} />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl ${card.bgColor} flex items-center justify-center flex-shrink-0`}>
+                <Icon size={16} strokeWidth={1.5} className={`${card.color} sm:w-5 sm:h-5`} />
               </div>
-              <div>
-                <p className="text-2xl font-bold text-white">{count}</p>
-                <p className="text-xs text-white/50">{card.label}</p>
+              <div className="min-w-0">
+                <p className="text-xl sm:text-2xl font-bold text-white">{count}</p>
+                <p className="text-xs text-white/50 truncate">{card.label}</p>
               </div>
             </div>
           </Link>

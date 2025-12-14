@@ -17,16 +17,16 @@ export function LoreOverviewHeader({ total }: LoreOverviewHeaderProps) {
   const { locale } = useLocale()
   
   return (
-    <div className="flex items-center justify-between mb-8">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
       <div>
-        <h1 className="text-3xl font-bold text-white mb-2">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">
           {t('lore.title', locale)}
         </h1>
-        <p className="text-white/50">
+        <p className="text-sm sm:text-base text-white/50">
           {total} {locale === 'ru' ? 'записей всего' : 'entries total'}
         </p>
       </div>
-      <Link href="/lore/new" className="btn btn-primary">
+      <Link href="/lore/new" className="btn btn-primary w-full sm:w-auto justify-center">
         <Plus size={18} strokeWidth={1.5} />
         {t('lore.newEntry', locale)}
       </Link>

@@ -71,7 +71,7 @@ function EntityIcon({ type }: { type: GameEntityType }) {
 export function ThoughtCard({ thought }: ThoughtCardProps) {
   return (
     <Link href={`/thoughts/${thought.id}`} className="block">
-      <div className="glass-card p-5 h-full flex flex-col min-h-[220px]">
+      <div className="glass-card p-4 sm:p-5 h-full flex flex-col min-h-[200px] sm:min-h-[220px]">
         {/* Header */}
         <div className="flex items-start gap-3 mb-3">
           <h3 className="font-semibold text-white line-clamp-2 flex-1 leading-snug">
@@ -111,9 +111,9 @@ export function ThoughtCard({ thought }: ThoughtCardProps) {
         )}
         
         {/* Footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-white/5 mt-auto">
-          <div className="flex items-center gap-2">
-            <span className={`px-2.5 py-1 rounded-lg text-xs font-medium border status-${thought.status.toLowerCase()}`}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-3 border-t border-white/5 mt-auto">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className={`px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg text-xs font-medium border status-${thought.status.toLowerCase()}`}>
               {statusLabels[thought.status]}
             </span>
             <span className={`text-xs font-medium priority-${thought.priority.toLowerCase()}`}>

@@ -64,8 +64,8 @@ export function OnboardingStatusCards({ stats, currentCategory }: OnboardingStat
               isActive && 'ring-2 ring-white/30'
             )}
           >
-            <p className="text-2xl font-bold text-white">{count}</p>
-            <p className="text-xs text-white/60 mt-1">{labels[locale]}</p>
+            <p className="text-xl sm:text-2xl font-bold text-white">{count}</p>
+            <p className="text-xs text-white/60 mt-1 truncate">{labels[locale]}</p>
           </Link>
         )
       })}

@@ -97,7 +97,7 @@ export function ThoughtsOverviewCards({
   ]
   
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
       {entityTypes.map(({ type, icon: Icon, labelRu, labelEn, descRu, descEn, color, iconColor }) => {
         const count = statsByType[type] || 0
         const recent = recentByType[type] || []
@@ -107,28 +107,28 @@ export function ThoughtsOverviewCards({
         return (
           <div 
             key={type}
-            className={`glass-card p-6 bg-gradient-to-br ${color} border border-white/5`}
+            className={`glass-card p-4 sm:p-6 bg-gradient-to-br ${color} border border-white/5`}
           >
             {/* Header */}
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center gap-3">
+            <div className="flex items-start justify-between mb-3 sm:mb-4">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <div 
-                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0"
                   style={{ backgroundColor: `${iconColor}15` }}
                 >
-                  <Icon size={24} strokeWidth={1.5} style={{ color: iconColor }} />
+                  <Icon size={20} strokeWidth={1.5} style={{ color: iconColor }} className="sm:w-6 sm:h-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white">{label}</h3>
-                  <p className="text-2xl font-bold text-white">{count}</p>
+                  <h3 className="text-base sm:text-lg font-semibold text-white">{label}</h3>
+                  <p className="text-xl sm:text-2xl font-bold text-white">{count}</p>
                 </div>
               </div>
               <Link 
                 href={`/thoughts/new?entityType=${type}`}
-                className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                className="p-1.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors"
                 title={locale === 'ru' ? 'Создать' : 'Create'}
               >
-                <Plus size={18} strokeWidth={1.5} className="text-white/40" />
+                <Plus size={16} strokeWidth={1.5} className="text-white/40 sm:w-[18px] sm:h-[18px]" />
               </Link>
             </div>
             
@@ -171,24 +171,24 @@ export function ThoughtsOverviewCards({
       })}
       
       {/* Other / Unlinked card */}
-      <div className="glass-card p-6 bg-gradient-to-br from-[#6A665E]/15 to-[#6A665E]/5 border border-white/5">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-[#6A665E]/20 flex items-center justify-center">
-              <HelpCircle size={24} strokeWidth={1.5} className="text-[#9C9688]" />
+      <div className="glass-card p-4 sm:p-6 bg-gradient-to-br from-[#6A665E]/15 to-[#6A665E]/5 border border-white/5">
+        <div className="flex items-start justify-between mb-3 sm:mb-4">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[#6A665E]/20 flex items-center justify-center flex-shrink-0">
+              <HelpCircle size={20} strokeWidth={1.5} className="text-[#9C9688] sm:w-6 sm:h-6" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-base sm:text-lg font-semibold text-white">
                 {locale === 'ru' ? 'Другое' : 'Other'}
               </h3>
-              <p className="text-2xl font-bold text-white">{unlinkedCount}</p>
+              <p className="text-xl sm:text-2xl font-bold text-white">{unlinkedCount}</p>
             </div>
           </div>
           <Link 
             href="/thoughts/new"
-            className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+            className="p-1.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors"
           >
-            <Plus size={18} strokeWidth={1.5} className="text-white/40" />
+            <Plus size={16} strokeWidth={1.5} className="text-white/40 sm:w-[18px] sm:h-[18px]" />
           </Link>
         </div>
         

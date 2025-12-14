@@ -34,26 +34,26 @@ export function EntitiesHeader({ total, typeName }: EntitiesHeaderProps) {
     : t('entities.title', locale)
   
   return (
-    <div className="mb-8">
+    <div className="mb-6 sm:mb-8">
       {/* Back link */}
       <Link 
         href="/entities" 
-        className="inline-flex items-center gap-2 text-white/50 hover:text-white mb-4 transition-colors"
+        className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white mb-3 sm:mb-4 transition-colors"
       >
         <ArrowLeft size={16} strokeWidth={1.5} />
         {locale === 'ru' ? 'К обзору сущностей' : 'Back to entities'}
       </Link>
       
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">
             {displayTypeName}
           </h1>
-          <p className="text-white/50">
+          <p className="text-sm sm:text-base text-white/50">
             {total} {locale === 'ru' ? 'сущностей' : 'entities'}
           </p>
         </div>
-        <Link href="/entities/new" className="btn btn-primary">
+        <Link href="/entities/new" className="btn btn-primary w-full sm:w-auto justify-center">
           <Plus size={18} strokeWidth={1.5} />
           {t('entities.newEntity', locale)}
         </Link>

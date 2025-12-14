@@ -119,7 +119,7 @@ export function ConceptArtOverviewCards({
   
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
         {entityTypeCards.map(({ type, icon: Icon, labelRu, labelEn, descRu, descEn, color, iconColor }) => {
           const count = statsByType[type] || 0
           const recent = recentByType[type] || []
@@ -129,28 +129,28 @@ export function ConceptArtOverviewCards({
           return (
             <div 
               key={type}
-              className={`glass-card p-6 bg-gradient-to-br ${color} border border-white/5`}
+              className={`glass-card p-4 sm:p-6 bg-gradient-to-br ${color} border border-white/5`}
             >
               {/* Header */}
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
+              <div className="flex items-start justify-between mb-3 sm:mb-4">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <div 
-                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0"
                     style={{ backgroundColor: `${iconColor}15` }}
                   >
-                    <Icon size={24} strokeWidth={1.5} style={{ color: iconColor }} />
+                    <Icon size={20} strokeWidth={1.5} style={{ color: iconColor }} className="sm:w-6 sm:h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-white">{label}</h3>
-                    <p className="text-2xl font-bold text-white">{count}</p>
+                    <h3 className="text-base sm:text-lg font-semibold text-white">{label}</h3>
+                    <p className="text-xl sm:text-2xl font-bold text-white">{count}</p>
                   </div>
                 </div>
                 <Link 
                   href={`/concept-art/new?entityType=${type}`}
-                  className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                  className="p-1.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors"
                   title={locale === 'ru' ? 'Загрузить' : 'Upload'}
                 >
-                  <Plus size={18} strokeWidth={1.5} className="text-white/40" />
+                  <Plus size={16} strokeWidth={1.5} className="text-white/40 sm:w-[18px] sm:h-[18px]" />
                 </Link>
               </div>
               
@@ -204,24 +204,24 @@ export function ConceptArtOverviewCards({
       
       {/* Unlinked arts section */}
       {unlinkedCount > 0 && (
-        <div className="mt-6 glass-card p-6 bg-gradient-to-r from-[#5F646B]/10 to-transparent border border-white/5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-[#5F646B]/20 flex items-center justify-center">
-                <ImageIcon size={24} strokeWidth={1.5} className="text-[#9C9688]" />
+        <div className="mt-4 sm:mt-6 glass-card p-4 sm:p-6 bg-gradient-to-r from-[#5F646B]/10 to-transparent border border-white/5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[#5F646B]/20 flex items-center justify-center flex-shrink-0">
+                <ImageIcon size={20} strokeWidth={1.5} className="text-[#9C9688] sm:w-6 sm:h-6" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white">
+                <h3 className="text-base sm:text-lg font-semibold text-white">
                   {locale === 'ru' ? 'Без привязки' : 'Unlinked'}
                 </h3>
-                <p className="text-white/50">
+                <p className="text-sm text-white/50">
                   {unlinkedCount} {locale === 'ru' ? 'работ без сущности' : 'works without entity'}
                 </p>
               </div>
             </div>
             <Link 
               href="/concept-art?unlinked=true"
-              className="btn btn-secondary flex items-center gap-2"
+              className="btn btn-secondary flex items-center justify-center gap-2 w-full sm:w-auto"
             >
               {locale === 'ru' ? 'Показать' : 'View'}
               <ArrowRight size={16} strokeWidth={1.5} />

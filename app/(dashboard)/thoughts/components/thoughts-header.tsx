@@ -35,28 +35,28 @@ export function ThoughtsHeader({ total, statusName }: ThoughtsHeaderProps) {
     : t('thoughts.title', locale)
   
   return (
-    <div className="mb-6">
+    <div className="mb-6 sm:mb-8">
       {/* Back link - only shown for filtered views */}
       {statusName && (
         <Link 
           href="/thoughts" 
-          className="inline-flex items-center gap-2 text-white/50 hover:text-white mb-4 transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white mb-3 sm:mb-4 transition-colors"
         >
           <ArrowLeft size={16} strokeWidth={1.5} />
           {locale === 'ru' ? 'К обзору мыслей' : 'Back to thoughts'}
         </Link>
       )}
       
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">
             {displayStatusName}
           </h1>
-          <p className="text-white/50">
+          <p className="text-sm sm:text-base text-white/50">
             {total} {t('common.records', locale)}
           </p>
         </div>
-        <Link href="/thoughts/new" className="btn btn-primary">
+        <Link href="/thoughts/new" className="btn btn-primary w-full sm:w-auto justify-center">
           <Plus size={18} strokeWidth={1.5} />
           {t('thoughts.newThought', locale)}
         </Link>

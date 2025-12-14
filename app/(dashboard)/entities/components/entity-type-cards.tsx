@@ -46,19 +46,19 @@ export function EntityTypeCards({ stats, total, currentType }: EntityTypeCardsPr
   const types = ['HERO', 'UNIT', 'FACTION', 'SPELL', 'ARTIFACT', 'LOCATION', 'OBJECT', 'OTHER']
   
   return (
-    <div className="flex gap-3 mb-6 flex-wrap">
+    <div className="flex gap-2 sm:gap-3 mb-4 sm:mb-6 flex-wrap overflow-x-auto pb-2 -mx-1 px-1">
       {/* All */}
       <Link 
         href="/entities"
-        className={`flex items-center gap-3 px-4 py-2.5 rounded-xl bg-gradient-to-br transition-all hover:scale-[1.02] ${
+        className={`flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-br transition-all hover:scale-[1.02] flex-shrink-0 ${
           !currentType 
             ? 'from-white/20 to-white/10 ring-2 ring-offset-2 ring-offset-[#0B0B0C] ring-white/50'
             : 'from-white/10 to-white/5'
         }`}
       >
-        <LayoutGrid size={18} strokeWidth={1.5} className="text-white/70" />
-        <span className="font-semibold text-white">{total}</span>
-        <span className="text-sm text-white/60">{t('common.all', locale)}</span>
+        <LayoutGrid size={16} strokeWidth={1.5} className="text-white/70 sm:w-[18px] sm:h-[18px]" />
+        <span className="font-semibold text-white text-sm sm:text-base">{total}</span>
+        <span className="text-xs sm:text-sm text-white/60">{t('common.all', locale)}</span>
       </Link>
       
       {/* Type cards */}
@@ -74,16 +74,16 @@ export function EntityTypeCards({ stats, total, currentType }: EntityTypeCardsPr
           <Link 
             key={type}
             href={isActive ? '/entities' : `/entities?type=${type}`}
-            className={`flex items-center gap-3 px-4 py-2.5 rounded-xl bg-gradient-to-br transition-all hover:scale-[1.02] ${
+            className={`flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-br transition-all hover:scale-[1.02] flex-shrink-0 ${
               isActive 
                 ? `${color.activeBg} ring-2 ring-offset-2 ring-offset-[#0B0B0C]`
                 : color.bg
             }`}
             style={{ ['--tw-ring-color' as string]: color.text }}
           >
-            <Icon size={18} strokeWidth={1.5} style={{ color: color.text }} />
-            <span className="font-semibold text-white">{count}</span>
-            <span className="text-sm text-white/60">{getEntityTypePluralLabel(type, locale)}</span>
+            <Icon size={16} strokeWidth={1.5} style={{ color: color.text }} className="sm:w-[18px] sm:h-[18px]" />
+            <span className="font-semibold text-white text-sm sm:text-base">{count}</span>
+            <span className="text-xs sm:text-sm text-white/60 whitespace-nowrap">{getEntityTypePluralLabel(type, locale)}</span>
           </Link>
         )
       })}
