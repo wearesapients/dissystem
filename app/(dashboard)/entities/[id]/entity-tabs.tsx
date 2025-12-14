@@ -127,33 +127,35 @@ export function EntityTabs({ entityId, entityName, entityType, conceptArts, lore
   return (
     <div>
       {/* Tab Navigation */}
-      <div className="flex items-center gap-1 border-b border-white/10 mb-6">
-        {tabs.map(({ id, label, icon: Icon }) => {
-          const isActive = activeTab === id
-          const count = getCount(id)
-          
-          return (
-            <button
-              key={id}
-              onClick={() => handleTabChange(id)}
-              className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-all ${
-                isActive
-                  ? 'border-[#A89C6A] text-white'
-                  : 'border-transparent text-white/50 hover:text-white/70'
-              }`}
-            >
-              <Icon size={18} strokeWidth={1.5} />
-              <span className="font-medium">{label}</span>
-              {count > 0 && (
-                <span className={`text-xs px-1.5 py-0.5 rounded-full ${
-                  isActive ? 'bg-[#A89C6A]/20 text-[#A89C6A]' : 'bg-white/10 text-white/50'
-                }`}>
-                  {count}
-                </span>
-              )}
-            </button>
-          )
-        })}
+      <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+        <div className="flex items-center gap-1 border-b border-white/10 mb-6 min-w-max">
+          {tabs.map(({ id, label, icon: Icon }) => {
+            const isActive = activeTab === id
+            const count = getCount(id)
+            
+            return (
+              <button
+                key={id}
+                onClick={() => handleTabChange(id)}
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-3 border-b-2 transition-all flex-shrink-0 ${
+                  isActive
+                    ? 'border-[#A89C6A] text-white'
+                    : 'border-transparent text-white/50 hover:text-white/70'
+                }`}
+              >
+                <Icon size={16} strokeWidth={1.5} />
+                <span className="font-medium text-sm sm:text-base whitespace-nowrap">{label}</span>
+                {count > 0 && (
+                  <span className={`text-xs px-1.5 py-0.5 rounded-full ${
+                    isActive ? 'bg-[#A89C6A]/20 text-[#A89C6A]' : 'bg-white/10 text-white/50'
+                  }`}>
+                    {count}
+                  </span>
+                )}
+              </button>
+            )
+          })}
+        </div>
       </div>
       
       {/* Tab Content */}
@@ -397,47 +399,47 @@ function UnitStatsTabContent({ entityId, entityType, unitProfile, locale }: Unit
       </div>
 
       {/* Main Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
         {/* HP */}
-        <div className="glass-card p-4">
-          <div className="flex items-center gap-2 text-white/50 text-sm mb-2">
-            <Heart size={16} strokeWidth={1.5} className="text-[#9A4A4A]" />
+        <div className="glass-card p-3 sm:p-4">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-white/50 text-xs sm:text-sm mb-1 sm:mb-2">
+            <Heart size={14} strokeWidth={1.5} className="text-[#9A4A4A]" />
             <span>HP</span>
           </div>
-          <p className="text-2xl font-bold text-white">{unitProfile.hpMax}</p>
+          <p className="text-xl sm:text-2xl font-bold text-white">{unitProfile.hpMax}</p>
           {unitProfile.hpRegenPercent > 0 && (
-            <p className="text-xs text-[#7A8A5C] mt-1">+{unitProfile.hpRegenPercent}% / ход</p>
+            <p className="text-xs text-[#7A8A5C] mt-1">+{unitProfile.hpRegenPercent}%</p>
           )}
         </div>
 
         {/* Armor */}
-        <div className="glass-card p-4">
-          <div className="flex items-center gap-2 text-white/50 text-sm mb-2">
-            <Shield size={16} strokeWidth={1.5} className="text-[#6B8F94]" />
+        <div className="glass-card p-3 sm:p-4">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-white/50 text-xs sm:text-sm mb-1 sm:mb-2">
+            <Shield size={14} strokeWidth={1.5} className="text-[#6B8F94]" />
             <span>{locale === 'ru' ? 'Броня' : 'Armor'}</span>
           </div>
-          <p className="text-2xl font-bold text-white">{unitProfile.armor}</p>
+          <p className="text-xl sm:text-2xl font-bold text-white">{unitProfile.armor}</p>
         </div>
 
         {/* Level */}
-        <div className="glass-card p-4">
-          <div className="flex items-center gap-2 text-white/50 text-sm mb-2">
-            <Zap size={16} strokeWidth={1.5} className="text-[#A89C6A]" />
-            <span>{locale === 'ru' ? 'Уровень' : 'Level'}</span>
+        <div className="glass-card p-3 sm:p-4">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-white/50 text-xs sm:text-sm mb-1 sm:mb-2">
+            <Zap size={14} strokeWidth={1.5} className="text-[#A89C6A]" />
+            <span>{locale === 'ru' ? 'Ур.' : 'Lvl'}</span>
           </div>
-          <p className="text-2xl font-bold text-white">{unitProfile.level}</p>
-          <p className="text-xs text-white/40 mt-1">
-            {unitProfile.xpCurrent} / {unitProfile.xpToNext} XP
+          <p className="text-xl sm:text-2xl font-bold text-white">{unitProfile.level}</p>
+          <p className="text-xs text-white/40 mt-1 truncate">
+            {unitProfile.xpCurrent}/{unitProfile.xpToNext}
           </p>
         </div>
 
         {/* Role */}
-        <div className="glass-card p-4">
-          <div className="flex items-center gap-2 text-white/50 text-sm mb-2">
-            <Target size={16} strokeWidth={1.5} className="text-[#8A6A9A]" />
+        <div className="glass-card p-3 sm:p-4">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-white/50 text-xs sm:text-sm mb-1 sm:mb-2">
+            <Target size={14} strokeWidth={1.5} className="text-[#8A6A9A]" />
             <span>{locale === 'ru' ? 'Роль' : 'Role'}</span>
           </div>
-          <p className="text-lg font-bold text-white">{getRoleLabel(unitProfile.role, locale)}</p>
+          <p className="text-base sm:text-lg font-bold text-white truncate">{getRoleLabel(unitProfile.role, locale)}</p>
         </div>
       </div>
 
@@ -534,9 +536,9 @@ function UnitStatsTabContent({ entityId, entityType, unitProfile, locale }: Unit
       )}
 
       {/* Attacks */}
-      <div className="glass-card p-6">
-        <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-          <Swords size={20} strokeWidth={1.5} />
+      <div className="glass-card p-4 sm:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <Swords size={18} strokeWidth={1.5} />
           {locale === 'ru' ? 'Атаки' : 'Attacks'}
           <span className="text-white/40 text-sm font-normal">({unitProfile.attacks.length})</span>
         </h3>
@@ -546,14 +548,14 @@ function UnitStatsTabContent({ entityId, entityType, unitProfile, locale }: Unit
         ) : (
           <div className="space-y-3">
             {unitProfile.attacks.map((attack) => (
-              <div key={attack.id} className="bg-white/5 rounded-xl p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="font-medium text-white">{attack.name}</h4>
-                  <span className="text-xs px-2 py-1 rounded bg-white/10 text-white/60">
+              <div key={attack.id} className="bg-white/5 rounded-xl p-3 sm:p-4">
+                <div className="flex items-center justify-between mb-3 gap-2">
+                  <h4 className="font-medium text-white text-sm sm:text-base truncate">{attack.name}</h4>
+                  <span className="text-xs px-2 py-1 rounded bg-white/10 text-white/60 flex-shrink-0">
                     {getDamageSourceLabel(attack.damageSource, locale)}
                   </span>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-4 text-xs sm:text-sm">
                   <div>
                     <span className="text-white/40">{locale === 'ru' ? 'Шанс' : 'Hit'}</span>
                     <p className="text-white font-medium">{Math.round(attack.hitChance * 100)}%</p>

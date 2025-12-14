@@ -7,11 +7,11 @@ export const metadata: Metadata = {
   description: "Game development studio internal CRM",
   icons: {
     icon: [
-      { url: '/logo-icon.png', type: 'image/png', sizes: '32x32' },
-      { url: '/logo-icon.png', type: 'image/png', sizes: '16x16' },
+      { url: '/favicon.png', type: 'image/png', sizes: '32x32' },
+      { url: '/favicon.png', type: 'image/png', sizes: '16x16' },
     ],
-    shortcut: '/logo-icon.png',
-    apple: '/logo-icon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
   },
 }
 
@@ -23,9 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/logo-icon.png" type="image/png" sizes="32x32" />
-        <link rel="icon" href="/logo-icon.png" type="image/png" sizes="16x16" />
-        <link rel="apple-touch-icon" href="/logo-icon.png" />
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="16x16" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
       </head>
       <body className="antialiased">
         <FogBackground />

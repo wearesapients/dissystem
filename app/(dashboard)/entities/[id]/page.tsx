@@ -77,20 +77,21 @@ export default async function EntityDetailPage({ params }: PageProps) {
   
   return (
     <div className="animate-in">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <Link href="/entities" className="text-white/50 hover:text-white inline-flex items-center gap-2 transition-colors">
           <ArrowLeft size={16} strokeWidth={1.5} />
           Назад к сущностям
         </Link>
         
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
           {canEdit && (
             <Link 
               href={`/entities/${id}/edit`} 
-              className="btn btn-secondary flex items-center gap-2"
+              className="btn btn-secondary flex items-center gap-2 flex-1 sm:flex-none justify-center"
             >
               <Edit size={16} strokeWidth={1.5} />
-              Редактировать
+              <span className="hidden sm:inline">Редактировать</span>
+              <span className="sm:hidden">Ред.</span>
             </Link>
           )}
           <EntityActions entityId={entity.id} entityName={entity.name} userRole={currentUser.role} />
@@ -98,21 +99,21 @@ export default async function EntityDetailPage({ params }: PageProps) {
       </div>
       
       {/* Header */}
-      <div className="glass-card p-8 mb-8">
-        <div className="flex items-start gap-6">
-          <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center">
-            <EntityTypeIcon type={entity.type} size={36} />
+      <div className="glass-card p-4 sm:p-8 mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center flex-shrink-0">
+            <EntityTypeIcon type={entity.type} size={32} />
           </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 mb-2 flex-wrap">
               <EntityBadge type={entity.type} />
-              <span className="text-white/30 font-mono text-sm">{entity.code}</span>
+              <span className="text-white/30 font-mono text-xs sm:text-sm">{entity.code}</span>
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">{entity.name}</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">{entity.name}</h1>
             {entity.description && (
-              <p className="text-white/60 max-w-2xl leading-relaxed">{entity.description}</p>
+              <p className="text-white/60 max-w-2xl leading-relaxed text-sm sm:text-base">{entity.description}</p>
             )}
-            <div className="flex items-center gap-4 text-sm text-white/40 mt-4">
+            <div className="flex items-center justify-center sm:justify-start gap-3 sm:gap-4 text-xs sm:text-sm text-white/40 mt-4">
               <span className="flex items-center gap-1.5">
                 <User size={14} strokeWidth={1.5} />
                 {entity.createdBy.name}
@@ -126,21 +127,21 @@ export default async function EntityDetailPage({ params }: PageProps) {
         </div>
         
         {/* Stats */}
-        <div className="flex gap-6 mt-6 pt-6 border-t border-white/10">
+        <div className="flex flex-wrap justify-center sm:justify-start gap-4 sm:gap-6 mt-6 pt-6 border-t border-white/10">
           <div className="flex items-center gap-2">
-            <Palette size={18} strokeWidth={1.5} className="text-white/40" />
+            <Palette size={16} strokeWidth={1.5} className="text-white/40" />
             <span className="text-white font-medium">{entity._count.conceptArts}</span>
-            <span className="text-white/40">концептов</span>
+            <span className="text-white/40 text-sm">концептов</span>
           </div>
           <div className="flex items-center gap-2">
-            <BookOpen size={18} strokeWidth={1.5} className="text-white/40" />
+            <BookOpen size={16} strokeWidth={1.5} className="text-white/40" />
             <span className="text-white font-medium">{entity._count.loreEntries}</span>
-            <span className="text-white/40">записей лора</span>
+            <span className="text-white/40 text-sm">записей лора</span>
           </div>
           <div className="flex items-center gap-2">
-            <Lightbulb size={18} strokeWidth={1.5} className="text-white/40" />
+            <Lightbulb size={16} strokeWidth={1.5} className="text-white/40" />
             <span className="text-white font-medium">{entity._count.thoughts}</span>
-            <span className="text-white/40">мыслей</span>
+            <span className="text-white/40 text-sm">мыслей</span>
           </div>
         </div>
       </div>

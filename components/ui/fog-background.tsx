@@ -153,7 +153,7 @@ export function FogBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-0 pointer-events-none"
+      className="fixed inset-0 z-0 pointer-events-none hidden sm:block"
       style={{ 
         imageRendering: 'auto',
         filter: 'blur(8px)',
