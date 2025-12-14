@@ -32,10 +32,12 @@ jobs:
             git reset --hard origin/main
             
             echo "📦 Installing dependencies..."
+            rm -rf node_modules .next
             npm ci --production=false
             
             echo "🔨 Building application..."
-            npm run build
+            ./node_modules/.bin/prisma generate
+            ./node_modules/.bin/next build
             
             echo "🗃️ Running database migrations..."
             ./node_modules/.bin/prisma migrate deploy || ./node_modules/.bin/prisma db push
