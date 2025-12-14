@@ -65,3 +65,4 @@ export function ThoughtsHeader({ total, statusName }: ThoughtsHeaderProps) {
   )
 }
 
+

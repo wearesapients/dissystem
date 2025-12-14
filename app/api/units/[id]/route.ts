@@ -155,3 +155,4 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: 'Ошибка удаления юнита' }, { status: 500 })
   }
 }
+

@@ -37,3 +37,4 @@ export function OnboardingHeader({ total }: OnboardingHeaderProps) {
     </div>
   )
 }
+

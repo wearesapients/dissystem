@@ -62,3 +62,4 @@ export function EntitiesHeader({ total, typeName }: EntitiesHeaderProps) {
   )
 }
 
+

@@ -162,3 +162,4 @@ export function LoreCard({ entry }: LoreCardProps) {
     </Link>
   )
 }
+

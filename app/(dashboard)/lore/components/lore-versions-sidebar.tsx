@@ -305,3 +305,4 @@ export function LoreVersionsSidebar({ loreEntryId, versions, currentVersion }: L
     </div>
   )
 }
+

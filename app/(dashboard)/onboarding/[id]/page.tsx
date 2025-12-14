@@ -294,3 +294,4 @@ export default async function OnboardingDetailPage({ params }: PageProps) {
     </div>
   )
 }
+

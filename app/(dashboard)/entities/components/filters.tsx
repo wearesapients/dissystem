@@ -134,3 +134,4 @@ export function EntitiesFilters({ currentType, currentSort, stats }: FiltersProp
   )
 }
 
+

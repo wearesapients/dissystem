@@ -31,3 +31,4 @@ export function EntityEmptyState({ type }: EntityEmptyStateProps) {
     </div>
   )
 }
+

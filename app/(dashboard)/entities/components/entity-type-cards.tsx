@@ -91,3 +91,4 @@ export function EntityTypeCards({ stats, total, currentType }: EntityTypeCardsPr
   )
 }
 
+

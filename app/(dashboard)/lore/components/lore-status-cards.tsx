@@ -92,3 +92,4 @@ export function LoreStatusCards({ stats, currentStatus }: StatusCardsProps) {
     </div>
   )
 }
+

@@ -164,3 +164,4 @@ export function LoreActions({ entry, userRole }: LoreActionsProps) {
     </div>
   )
 }
+

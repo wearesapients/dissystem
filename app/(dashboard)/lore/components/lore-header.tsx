@@ -62,3 +62,4 @@ export function LoreHeader({ total, statusName }: LoreHeaderProps) {
     </div>
   )
 }
+

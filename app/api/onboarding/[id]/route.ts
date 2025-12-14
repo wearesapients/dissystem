@@ -116,3 +116,4 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
     return NextResponse.json({ error: 'Ошибка сервера' }, { status: 500 })
   }
 }
+

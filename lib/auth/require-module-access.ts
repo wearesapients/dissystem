@@ -39,3 +39,4 @@ export async function requireModuleEdit(module: Module, redirectPath?: string) {
   
   return user
 }
+

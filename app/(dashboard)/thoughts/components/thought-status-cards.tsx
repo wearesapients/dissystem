@@ -118,3 +118,4 @@ export function ThoughtStatusCards({ stats, currentStatus }: ThoughtStatusCardsP
   )
 }
 
+

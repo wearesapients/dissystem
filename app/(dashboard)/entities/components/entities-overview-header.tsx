@@ -33,3 +33,4 @@ export function EntitiesOverviewHeader({ total }: EntitiesOverviewHeaderProps) {
     </div>
   )
 }
+

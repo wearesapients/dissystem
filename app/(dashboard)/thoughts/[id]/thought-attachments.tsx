@@ -129,3 +129,4 @@ export function ThoughtAttachments({ thoughtId }: Props) {
     </div>
   )
 }
+

@@ -70,3 +70,4 @@ export function ConceptArtHeader({ total, statusName }: Props) {
   )
 }
 
+

@@ -72,3 +72,4 @@ export function OnboardingStatusCards({ stats, currentCategory }: OnboardingStat
     </div>
   )
 }
+

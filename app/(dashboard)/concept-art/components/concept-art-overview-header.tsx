@@ -33,3 +33,4 @@ export function ConceptArtOverviewHeader({ total }: ConceptArtOverviewHeaderProp
     </div>
   )
 }
+

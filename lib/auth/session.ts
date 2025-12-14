@@ -101,3 +101,4 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
   return session?.user ?? null
 }
 
+

@@ -389,3 +389,4 @@ export async function deleteUnit(id: string, userId: string) {
   
   return db.unit.delete({ where: { id } })
 }
+

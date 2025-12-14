@@ -249,3 +249,4 @@ export function ThoughtDetailActions({ thought, userRole }: Props) {
     </div>
   )
 }
+

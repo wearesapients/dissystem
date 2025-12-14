@@ -33,3 +33,4 @@ export function ThoughtsOverviewHeader({ total }: ThoughtsOverviewHeaderProps) {
     </div>
   )
 }
+

@@ -31,3 +31,4 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: 'Ошибка экспорта юнита' }, { status: 500 })
   }
 }
+

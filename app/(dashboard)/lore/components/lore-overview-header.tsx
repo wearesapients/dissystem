@@ -33,3 +33,4 @@ export function LoreOverviewHeader({ total }: LoreOverviewHeaderProps) {
     </div>
   )
 }
+
